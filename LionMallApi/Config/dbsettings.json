@@ -1,0 +1,10 @@
+{
+  "SqlServerConfig": {
+    "ConnString": "Data Source=172.26.67.184;User ID=sa;Password=yang320623++--@$;Initial Catalog=LionMall;Pooling=true;Max Pool Size=500;",
+    "dConnString": "Data Source=127.0.0.1;User ID=sa;Password=yang320623++--@$;Initial Catalog=LionMall;Pooling=true;Max Pool Size=500;",
+    "RDBSTablePre": "lt_",
+    "DataBase": "SqlServer",
+    "BusinessModule": "user"
+  },
+  "AllowedHosts": "*"
+}
