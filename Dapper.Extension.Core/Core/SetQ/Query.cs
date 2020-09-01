@@ -65,7 +65,6 @@ namespace Dapper.Extension.Core
             using (var queryResult = DbCon.QueryMultiple(sql, param, DbTransaction))
             {
                 var pageTotal = queryResult.ReadFirst<int>();
-
                 var itemList = queryResult.Read<T>();
 
                 return new PageList<T>(pageIndex, pageCount, pageTotal, itemList);

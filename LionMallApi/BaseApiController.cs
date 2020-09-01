@@ -67,8 +67,9 @@ namespace LionMallApi
                     _ticket = new UserTicket();
                     _ticket.ticketCode = head["ticketCode"].ToString();
                     _ticket.timeStamp = head["timeStamp"].ToString();
+                    _ticket.userId = head["userId"].ToString();
 #if DEBUG                    
-                    _ticket.userId = "9489cacf8e4f4696a9972df3d9f9fb19";
+                    _ticket.userId = "7bba344a8d68443b91cc13bb37f59fd2";
 #else
                     _ticket.userId = head["userId"].ToString();
 #endif

@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="LINQKit.Core" Version="1.1.17" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DataCommon\DataCommon.csproj" />
     <ProjectReference Include="..\Lion.Entity\Lion.Entity.csproj" />
     <ProjectReference Include="..\Lion.ViewModel\Lion.ViewModel.csproj" />

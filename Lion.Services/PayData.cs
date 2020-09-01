@@ -128,7 +128,7 @@ namespace Lion.Services
             //如果没有设置签名，则跳过检测
             if (!IsSet("sign"))
             {
-                throw new PayException("签名不正确!", 404);
+                return false;
             }
             //获取接收到的签名
             string return_sign = GetValue("sign").ToString();
@@ -140,7 +140,7 @@ namespace Lion.Services
             {
                 return true;
             }
-            throw new PayException("签名验证错误!", 404);
+            return false;
         }
         private string CalcHMACSHA256Hash(string plaintext, string salt)
         {

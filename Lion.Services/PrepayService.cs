@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using LionMall.Tools;
 
 namespace Lion.Services
 {
@@ -48,7 +49,7 @@ namespace Lion.Services
         /// 生成资产预付单
         /// </summary>
         /// <returns></returns>
-        public string InsertPrepayAsset(string usn,prepayType ptype, double amount,
+        public string InsertPrepayAsset(string usn,prepayType ptype, double amount, 
             double fee=0,double rate=0,int currencyid=0,string receiveAddr="",string receiveSn="", string orderno = "")
         {
             var psn = Guid.NewGuid().ToString().Replace("-", "");

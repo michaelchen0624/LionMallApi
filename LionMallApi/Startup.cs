@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Reflection;
 using Lion.Services;
 using LionMall.Tools;
 using Microsoft.AspNetCore.Builder;
@@ -46,17 +47,20 @@ namespace LionMallApi
             {
                 option.Filters.Add(new ApiResultFilter());
             }).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
                 {
-                    Title="LionMall Api",
-                    Version="v1"
+                    Title = "LionMall Api",
+                    Version = "v1"
                 });
-                var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);
-                var xmlPath = Path.Combine(basePath, "LionMallApi.xml");
+                //var basePath = Path.GetDirectoryName(typeof(Program).Assembly.Location);
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
             services.AddHttpClient();
             services.AddSingleton<UserService>();
             services.AddSingleton<RegisterService>();
@@ -74,6 +78,8 @@ namespace LionMallApi
             services.AddSingleton<MsgTool>();
             services.AddSingleton<IHttpUtils, HttpUtils>();
             services.AddSingleton<TicketService>();
+
+            services.AddCors(options => options.AddPolicy("LionMall", p => p.AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,12 +98,14 @@ namespace LionMallApi
             {
                 app.UseMiddleware<LionMallExceptionHandlerMiddleWare>();
             }
+            app.UseMvc();
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "LionMall Api v1");
+                c.RoutePrefix = "";
             });
-            app.UseMvc();
+            app.UseCors("LionMall");   
         }
     }
 }

@@ -34,7 +34,7 @@ namespace LionMallApi
 #if DEBUG
             .UseUrls("http://*:5000")
 #else
-             .UseUrls("http://*:5002")
+             .UseUrls("http://*:5001")
 #endif
                 .UseStartup<Startup>();
     }

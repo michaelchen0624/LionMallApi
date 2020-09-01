@@ -9,7 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using Prod.Core;
+using LionMall.Tools;
+using Lion.Entity;
 
 namespace LionMallApi.Controllers
 {
@@ -27,6 +28,7 @@ namespace LionMallApi.Controllers
         private RpcNotifyService _rpcService;
         private TicketService _ticketService;
         private UserService _userService;
+        private ChangerService _changerService;
         /// <summary>
         /// 
         /// </summary>
@@ -37,8 +39,9 @@ namespace LionMallApi.Controllers
         /// <param name="rpcService"></param>
         /// <param name="ticketService"></param>
         /// <param name="userService"></param>
+        /// /// <param name="changerService"></param>
         public OrderController(OrderService orderService,ILogService log,AssetService assetService,
-            IConfiguration config,TicketService ticketService,UserService userService,RpcNotifyService rpcService)
+            IConfiguration config,TicketService ticketService,UserService userService,RpcNotifyService rpcService, ChangerService changerService)
         {
             _orderService = orderService;
             _log = log;
@@ -47,10 +50,11 @@ namespace LionMallApi.Controllers
             _rpcService = rpcService;
             _ticketService = ticketService;
             _userService = userService;
+            _changerService = changerService;
         }
 
         /// <summary>
-        /// 
+        /// 短信发送测试
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -103,7 +107,7 @@ namespace LionMallApi.Controllers
             return geneRetData.geneRate<string>(1, "");
         }
         /// <summary>
-        /// 
+        /// 虚拟货币支付
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -138,6 +142,48 @@ namespace LionMallApi.Controllers
             });
             return "success";
         }
+
+        /// <summary>
+        /// 场外充值回调
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("ExchangeBuyNotify")]
+        public ActionResult<string> ExchangeBuyNotify(notifyData data)
+        {
+            _log.I("ExchangeBuyNotify", JsonConvert.SerializeObject(data));
+            Task.Run(() =>
+            {
+                _orderService.ExchangeBuyOrder(data.txhash);
+            });
+            return "success";
+        }
+
+        /// <summary>
+        /// 链上提现回调
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("ExchangeSellNotify")]
+        public ActionResult<string> ExchangeSellNotify(notifyData data)
+        {
+            _log.I("ExchangeSellNotify", JsonConvert.SerializeObject(data));
+            Task.Run(() =>
+            {
+                _orderService.ExchangeSellOrder(data.txhash);
+            });
+            return "success";
+        }
+
+        /// <summary>
+        /// 获取交易记录
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("GetOutTradeHis")]
+        public ActionResult<RespData<object>> GetOutTradeHis(string address)
+        {
+            var addr = _rpcService.GetOutTradeHis(address);
+            return geneRetData.geneRate<object>(1, addr);
+        }
+
         /// <summary>
         /// 获取上传票据
         /// </summary>
@@ -160,6 +206,22 @@ namespace LionMallApi.Controllers
                 Authorization = ret
             });
         }
+
+        /// <summary>
+        /// 获取交易记录
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost("TradeList")]
+        public ActionResult<RespData<RspTradeHis>> TradeList(RqTradeHis data)
+        {
+            _log.I("TradeList", JsonConvert.SerializeObject(data));
+            var paydata = new PayData<RqTradeHis>(data);
+            if (!paydata.CheckSign(PaySignType.MD5, "1234"))  
+                return geneRetData.geneRate<RspTradeHis>(1401, 0, new RspTradeHis(), "签名错误");
+            var list = _changerService.GetTradeList(data);
+            return geneRetData.geneRate<RspTradeHis>(1, list);
+        }
+
         /// <summary>
         /// 获取推广二维码
         /// </summary>
@@ -178,7 +240,29 @@ namespace LionMallApi.Controllers
             });
         }
         /// <summary>
-        /// 
+        /// 更改货币地址
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        //[HttpPost("ChangeAddress")]
+        //public ActionResult<RespData<string>> ChangeAddress(reqUsn data)
+        //{
+        //    var user = _userService.GetUserByUserSN(data.usn);
+        //    if (user == null)
+        //        return geneRetData.geneRate<string>(1401, null, "找不到用户");
+        //    var addr = _rpcService.GetNewAddr(new reqChainData
+        //    {
+        //        plat=2,
+        //        usn=user.guid
+        //    });
+        //    if(string.IsNullOrWhiteSpace(addr))
+        //        return geneRetData.geneRate<string>(1401, null, "生成地址失败");
+        //    _assetService.UpdateRechargeAddr(user.uid, addr);
+        //    return geneRetData.geneRate<string>(1, "");
+        //}
+
+        /// <summary>
+        /// 更改货币地址
         /// </summary>
         /// <param name="data"></param>
         /// <returns></returns>
@@ -188,12 +272,11 @@ namespace LionMallApi.Controllers
             var user = _userService.GetUserByUserSN(data.usn);
             if (user == null)
                 return geneRetData.geneRate<string>(1401, null, "找不到用户");
-            var addr = _rpcService.GetNewAddr(new reqChainData
+            var addr = _rpcService.GetAddr(new reqAddress
             {
-                plat=2,
-                usn=user.guid
+                pwd = data.usn
             });
-            if(string.IsNullOrWhiteSpace(addr))
+            if (string.IsNullOrWhiteSpace(addr))
                 return geneRetData.geneRate<string>(1401, null, "生成地址失败");
             _assetService.UpdateRechargeAddr(user.uid, addr);
             return geneRetData.geneRate<string>(1, "");

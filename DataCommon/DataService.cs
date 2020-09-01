@@ -80,6 +80,16 @@ namespace DataCommon
             }
             return count;
         }
+
+        public static int GetCount(string sql, object param)
+        {
+            var database = "sqlserver";
+            using (var Conn = RDBSHelper.GetDbConn(database))
+            {
+                Conn.ConnectionString = DBConfig.RDBSConfig.RDBSConnectString;
+                return (int)Conn.ExecuteScalar(sql, param);
+            }
+        }
         public static IEnumerable<T> GetList<T>(Expression<Func<T, bool>> where = null)
         {
             IEnumerable<T> list;
@@ -153,6 +163,7 @@ namespace DataCommon
             }
             return t;
         }
+
         public static IEnumerable<T> QueryPageListBySql<T>(string sql,object param,int pageIndex,int pageCount)
         {
             PageList<T> pagelist;

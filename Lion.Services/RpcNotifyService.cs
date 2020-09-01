@@ -4,10 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Prod.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+using LionMall.Tools;
 
 namespace Lion.Services
 {
@@ -117,6 +114,27 @@ namespace Lion.Services
             if (string.IsNullOrWhiteSpace(prepay) || !prepay.Contains("0x"))
                 prepay = "";
             return prepay;
+        }
+
+        public string GetAddr(reqAddress usn)
+        {
+            var url = _config.GetValue<string>("SendChain:getAddrUrl");
+            var ret = _httpUtils.httpPost(url, JsonConvert.SerializeObject(usn), "application/json");
+            JObject obj = JObject.Parse(ret);
+            if (!obj.ContainsKey("data"))
+            {
+                return "";
+            }
+            JObject data = JObject.Parse(obj["data"].ToString());
+            return data["address"].ToString();
+        }
+
+        public object GetOutTradeHis(string address) 
+        {
+            var url = _config.GetValue<string>("OrderConfig:changerUrl");
+            url += "?module=account&action=txlist&address=" + address + "&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=BJXHID3AEKK5IH9YWP62HA9H942HZ3ATF2";
+            var ret = _httpUtils.httpGet(url);
+            return "";
         }
     }
 }

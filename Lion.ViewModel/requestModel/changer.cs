@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.Contracts;
 using System.Text;
 
 namespace Lion.ViewModel.requestModel
@@ -10,6 +11,11 @@ namespace Lion.ViewModel.requestModel
         public string usn { get; set; }
         public int plat { get; set; }
         public string sign { get; set; }
+    }
+
+    public class reqAddress 
+    {
+    public string pwd { get; set; }
     }
     /// <summary>
     /// 场外购买提交
@@ -154,6 +160,31 @@ namespace Lion.ViewModel.requestModel
         public int initiator { get; set; }
         public long h_time { get; set; }
     }
+
+    /// <summary>
+    /// 兑换商回调数据
+    /// </summary>
+    public class notifyData
+    {
+        /// <summary>
+        /// 外部订单号
+        /// </summary>
+        public string txhash { get; set; }
+    }
+
+    /// <summary>
+    /// 链上提现请求数据
+    /// </summary>
+    public class reqChainWithdrawData
+    {
+        public string pwd { get; set; }
+        public string keystore { get; set; }
+        public string toAddress { get; set; }
+        public string money { get; set; }
+        public string gwei { get; set; }
+        public string token { get; set; }
+    }
+
     public class NotifyPayData
     {
         public string usn { get; set; }
@@ -164,5 +195,97 @@ namespace Lion.ViewModel.requestModel
         public string amount { get; set; }
         public long times { get; set; }
         public string sign { get; set; }
+    }
+    public class RqTradeHis
+    {
+        public string userName { get; set; }
+        public string begindate { get; set; }
+        public string enddate { get; set; }
+        public int Type { get; set; }
+        public int page { get; set; }
+        public int pagelimit { get; set; }
+        public string sign { get; set; }
+    }
+    public class TradeRecord
+    {
+        public int id { get; set; }
+        /// <summary>
+        /// 单据guid
+        /// </summary>
+        public string orderid { get; set; }
+        /// <summary>
+        /// 单号 10位数字
+        /// </summary>
+        public string orderno { get; set; }
+        /// <summary>
+        /// 兑换商服务单据id
+        /// </summary>
+        public string prepaysn { get; set; }
+        public int uid { get; set; }
+        /// <summary>
+        /// 兑换商id
+        /// </summary>
+        public int cid { get; set; }
+        /// <summary>
+        /// 支付方式id
+        /// </summary>
+        public int paymentid { get; set; }
+        /// <summary>
+        /// 购买金额
+        /// </summary>
+        public double amount { get; set; }
+        /// <summary>
+        /// 付款币种id
+        /// </summary>
+        public int currencyid { get; set; }
+        /// <summary>
+        /// 手续费
+        /// </summary>
+        public double rate { get; set; }
+        /// <summary>
+        /// 对应付款币种的付款金额
+        /// </summary>
+        public double camount { get; set; }
+        /// <summary>
+        /// 手续费
+        /// </summary>
+        public double fee { get; set; }
+        /// <summary>
+        /// 类型
+        /// </summary>
+        public string type { get; set; }
+        /// <summary>
+        /// 兑换商确认时间
+        /// </summary>
+        public long confirmtime { get; set; }
+        /// <summary>
+        /// 完成标志1=已完成
+        /// </summary>
+        public int flag { get; set; }
+        /// <summary>
+        /// 单据创建时间
+        /// </summary>
+        public long times { get; set; }
+    }
+    public class TradeHis
+    {
+        public string orderid { get; set; }
+        public string orderno { get; set; }
+        public string prepaysn { get; set; }
+        public string username { get; set; }
+        public double amount { get; set; }
+        public string currency { get; set; }
+        public double rate { get; set; }
+        public double camount { get; set; }
+        public double fee { get; set; }
+        public long confirmtime { get; set; }
+        public string type { get; set; }
+        public long time { get; set; }
+        public string state { get; set; }
+    }
+    public class RspTradeHis
+    {
+        public int count { get; set; }
+        public List<TradeHis> list { get; set; }
     }
 }

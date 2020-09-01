@@ -8,7 +8,7 @@ using Lion.ViewModel.respModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
-using Prod.Core;
+using LionMall.Tools;
 
 namespace LionMallApi.Controllers
 {

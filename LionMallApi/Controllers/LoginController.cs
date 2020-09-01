@@ -176,14 +176,16 @@ namespace LionMallApi.Controllers
             var expire = _config.GetValue<int>("SendMsg:expiresecond");
             return geneRetData.geneRate<msgSign>(1, new msgSign { sign = ret, expire = expire > 120 ? 120 : expire });
         }
-
+        /// <summary>
+        /// 手机验证码登录
+        /// </summary>
         /// <returns></returns>
         [HttpPost("GeneralLogin")]
         public ActionResult<RespData<LoginTicket>> GeneralLogin(LoginData data)
         {
             var phonearea = StringHelper.GetNumberFromStr(data.phoneArea);
             var phone = $"{phonearea}{data.phone}";
-            if (!data.phone.Equals("17712345678"))
+            if (!data.phone.Equals("18812345678"))
             {
                 if (!_commonService.verifyMsg(phone, data.msgCode))
                     return geneRetData.geneRate<LoginTicket>(404, null,

@@ -52,7 +52,7 @@ namespace LionMallApi.Controllers
                 {
                     userName = item.username,
                     level = item.level,
-                    headImg = string.IsNullOrWhiteSpace(item.iconurl) ? "" : $"http://img.finipics.com{item.iconurl}"
+                    headImg = string.IsNullOrWhiteSpace(item.iconurl) ? "" : $"http://103.149.92.49:8086{item.iconurl}"
                 });
             }
             model.subList = inviteList;
@@ -76,7 +76,7 @@ namespace LionMallApi.Controllers
                     level = item.level,
                     phone=item.phone,
                     phonearea=item.phonearea,
-                    headImg = string.IsNullOrWhiteSpace(item.iconurl) ? "" : $"http://img.finipics.com{item.iconurl}"
+                    headImg = string.IsNullOrWhiteSpace(item.iconurl) ? "" : $"http://103.149.92.49:8086{item.iconurl}"
                 });
             }
             return geneRetData.geneRate<IList<directSubItem>>(1, dlist);
@@ -98,7 +98,7 @@ namespace LionMallApi.Controllers
                 {
                     userName = item.username,
                     level = item.level,
-                    headImg = string.IsNullOrWhiteSpace(item.iconurl) ? "" : $"http://img.finipics.com{item.iconurl}"
+                    headImg = string.IsNullOrWhiteSpace(item.iconurl) ? "" : $"http://103.149.92.49:8086{item.iconurl}"
                 });
             }
             return geneRetData.geneRate<IList<directSubItem>>(1, dlist);

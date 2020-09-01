@@ -7,6 +7,8 @@ using System.Text;
 using System.Linq;
 using Lion.ViewModel.respModel;
 //using Dapper.Extension.MsSql
+using LionMall.Tools;
+using Lion.ViewModel.requestModel;
 
 namespace Lion.Services
 {
@@ -640,11 +642,12 @@ namespace Lion.Services
             if (addr == null)
             {
                 //_log.I("test", "取不到address的值");
-                address = _rpcService.GetNewAddr(new ViewModel.requestModel.reqChainData
-                {
-                    plat = 2,
-                    usn = usn
-                });
+                //address = _rpcService.GetNewAddr(new ViewModel.requestModel.reqChainData
+                //{
+                //    plat = 2,
+                //    usn = usn
+                //});
+                address = _rpcService.GetAddr(new reqAddress { pwd = usn });
             }
             else
             {
