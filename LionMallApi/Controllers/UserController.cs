@@ -106,7 +106,7 @@ namespace LionMallApi.Controllers
             var totoal = userbalance.balance_reward + userbalance.balance_shopping - userbalance.frozen_reward -
                 userbalance.frozen_shopping;
             var shopping = userbalance.balance_shopping - userbalance.frozen_shopping;
-            var iconUrl = string.IsNullOrWhiteSpace(user.iconurl) ? "" : $"http://103.149.92.49:8086{user.iconurl}";
+            var iconUrl = string.IsNullOrWhiteSpace(user.iconurl) ? "" : $"http://localhost:8086{user.iconurl}";
             var url_list = new List<urlInfo>();
 
             var useragent = Request.Headers["User-Agent"].ToString();
@@ -196,7 +196,7 @@ namespace LionMallApi.Controllers
                     accountNum = item.account,
                     payee = item.payee,
                     payTitle = lang == "cn" ? item.pay_cnname : item.pay_name,
-                    qrCode = string.IsNullOrWhiteSpace(item.qrcode) ? item.qrcode : $"http://103.149.92.49:8086{item.qrcode}",
+                    qrCode = string.IsNullOrWhiteSpace(item.qrcode) ? item.qrcode : $"http://localhost:8086{item.qrcode}",
                     payName = item.pay_name,
                     bank = item.bank,
                     payType = item.pay_type

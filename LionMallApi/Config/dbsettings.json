@@ -1,7 +1,7 @@
 {
   "SqlServerConfig": {
-    "ConnString": "Data Source=103.149.92.49;User ID=sa;Password=lianjia123;Initial Catalog=LionMall;Pooling=true;Max Pool Size=500;",
-    "dConnString": "Data Source=103.149.92.49;User ID=sa;Password=lianjia123;Initial Catalog=LionMall;Pooling=true;Max Pool Size=500;",
+    "ConnString": "Data Source=.;User ID=sa;Password=1027249742Chen;Initial Catalog=LionMall;Pooling=true;Max Pool Size=500;",
+    "dConnString": "Data Source=.;User ID=sa;Password=1027249742Chen;Initial Catalog=LionMall;Pooling=true;Max Pool Size=500;",
     "RDBSTablePre": "lt_",
     "DataBase": "SqlServer",
     "BusinessModule": "user"
